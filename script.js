@@ -1,12 +1,41 @@
 // Global vars
+let dateTime, date
 
-// currentTime var to show current time with moment.js
+// HTML element selectors
+var saveBtn = $(".saveBtn")
 
-// loop for the middle row comparing it to the currentTime var, change color classes
+// updateDate var to show current time with moment.js
+var updateDate = function() {
+  date = moment()
+  dateAndTime.html(date.format('dddd, MMMM Do YYYY, h:mm:ss a'))
+}
 
-// general listener for all the save buttons
-// save the text area next to the button by using sibling or pair
-// save that text content into my local storage
-// keys=time, data=textContent of that element
+$(document).ready(function() {
+  dateAndTime = $('#currentDay')
+  updateDate()
+  setInterval(updateDate, 1000)
+})
 
-// function to prevent local storage clear on refresh
+// loop for the middle column comparing it to the currentTime var, change color classes
+function colourTimeSlot() {
+  var currentHour = moment().hours()
+  console.log(currentHour)
+  $(".timeSlot").each(function() {
+    var hour = parseInt($(this).attr("id"))
+    if (hour > currentHour) {
+      $(this).addClass("future")
+    } else if (hour === currentHour ){
+      $(this).addClass("present")
+    } else {
+      $(this).addClass("past")
+    }
+  })
+}
+
+function saveTask() {
+  $(".timeSlot").each(function () {
+    var task = localStorage.getItem($(this).attr("id"))
+  })
+}
+
+colourTimeSlot()
